@@ -1,6 +1,6 @@
 ---
 name: git-commit-instructions
-description: Generates git commit messages with custom formatting (short summary + bulleted changes), based on conventional commits workflow.
+description: Generates git commit messages with custom formatting (short summary + bulleted changes), based on conventional commits workflow. Use when committing changes to git, creating standardized commit messages, or following git commit best practices.
 ---
 
 # Git Commit Skill
@@ -69,6 +69,9 @@ git status --porcelain
 ```
 
 ### 2. Stage Files (if needed)
+
+Add all changed files. Only skip if directed to not add files
+
 ```
 # Specific files
 git add path/to/file1.js path/to/file2.js
