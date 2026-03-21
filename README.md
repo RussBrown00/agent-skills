@@ -70,6 +70,9 @@ Handles website content fetching and lookups by converting webpages to markdown 
 ### git-commit-instructions
 Generates git commit messages with custom formatting (short summary + bulleted changes), based on conventional commits workflow.
 
+### javascript-development-guidance
+Enhance and guide the baked in knowledge of Javascript with specific standards, practices and preferences.
+
 ## Contributing
 
 Skills follow a specific structure with a required `SKILL.md` file containing YAML frontmatter and markdown instructions. See the [create-skill](create-skill/) for detailed guidance on creating effective skills.
