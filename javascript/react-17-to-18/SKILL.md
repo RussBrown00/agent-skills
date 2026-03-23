@@ -25,13 +25,25 @@ Follow **one phase at a time**. Validate after each (build, test, dev server, co
 - [Testing](references/testing-updates.md)
 - [Server Rendering](references/server-rendering.md) (if applicable)
 - [React 19 Prep](references/react-19-prep.md)
+- [Common Pitfalls](references/common-pitfalls.md)
 
 **NEVER skip validation steps.** Use bash for `npm install`, `npm test`, `npm run build`.
 
 ## Agent Instructions
+
 - Load relevant reference file using Read tool when entering a phase
 - Use grep/glob to locate patterns before editing
 - One phase at a time; confirm validation before proceeding
 - Run lint/typecheck/build after edits (use bash)
 - Load webpack-expert skill proactively for bundler issues
 - Reference official guide: https://react.dev/blog/2022/03/08/react-18-upgrade-guide
+
+## Lessons from pho-web Upgrade
+
+- Audit **all entrypoints** (grep `from ['"]react-dom['"]` + `render\(`); multiple roots common in complex apps (app.js, b2c.js, \*-portfolio.js, reg.js).
+- StrictMode + old `react-helmet` triggers `UNSAFE_componentWillMount` / `SideEffect(NullComponent)` - migrate to `react-helmet-async` + `<HelmetProvider>` **in every root.render**.
+- Update custom `PageTitleHelmet` / wrappers; remove `Helmet.peek()` and console.logs.
+- Commit per phase/entrypoint for rollback (squash at end).
+- Always re-run full `npm run lint` + `npm run build` after dep changes (package-lock updates).
+- CSR apps with `__INITIAL_STATE__` work well with `createRoot(container).render(...)`.
+- Use docker dev commands for validation in containerized projects.
