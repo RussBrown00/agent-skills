@@ -56,7 +56,12 @@ BREAKING CHANGE: v1 API removed
 
 ## Workflow
 
-### 1. Analyze Diff
+### 1. Initial Analysis
+- Run `git status` to check for uncommitted changes
+- Run `git log --oneline -10` to understand recent history
+- Use `git status --porcelain` and `git diff` for precise state
+
+### 2. Analyze Diff
 ```
 # Staged changes
 git diff --staged
@@ -68,7 +73,11 @@ git diff
 git status --porcelain
 ```
 
-### 2. Stage Files (if needed)
+### 3. Stage Files (if needed)
+
+Handle uncommitted work first:
+- If uncommitted changes exist, stage with `git add .` or specific paths
+- For temporary commits before squash/reset workflows, use simple message like "WIP: pending changes"
 
 Add all changed files. Only skip if directed to not add files
 
@@ -85,12 +94,12 @@ git add -p
 
 **Never commit secrets** (.env, keys, credentials).
 
-### 3. Generate Commit Message
+### 4. Generate Commit Message
 - Summary: <50 chars, imperative/present tense (e.g., "feat: add login")
 - Bullets: Key changes by significance, <72 chars
 - Optional: Types prefix, refs (Closes #123)
 
-### 4. Execute Commit
+### 5. Execute Commit
 ```
 # Multi-line
 git commit -m "$(cat <<EOF
