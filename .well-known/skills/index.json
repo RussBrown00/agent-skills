@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "skills": [
+    {
+      "name": "create-skill",
+      "path": "create-skill",
+      "description": "Guide for creating effective skills"
+    },
+    {
+      "name": "fetch-website-content",
+      "path": "fetch-website-content",
+      "description": "Handles website content fetching and lookups"
+    },
+    {
+      "name": "git-commit-instructions",
+      "path": "git-commit-instructions",
+      "description": "Generates git commit messages with custom formatting"
+    },
+    {
+      "name": "git-squash-merge",
+      "path": "git-squash-merge",
+      "description": "Automates squash merge workflow"
+    },
+    {
+      "name": "javascript-development-guidance",
+      "path": "javascript-development-guidance",
+      "description": "Enhance and guide Javascript standards"
+    },
+    {
+      "name": "javascript-jest",
+      "path": "javascript-jest",
+      "description": "Best practices for writing JavaScript and TypeScript tests using Jest"
+    },
+    {
+      "name": "javascript-react-17-to-18",
+      "path": "javascript-react-17-to-18",
+      "description": "Guides incremental upgrades from React 17 to 18"
+    }
+  ]
+}
