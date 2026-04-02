@@ -5,10 +5,17 @@ description: Generates git commit messages with custom formatting (short summary
 
 # Git Commit Skill
 
+## When to Use This Skill
+
+- user prompts "git commit changes" or similar
+- user prompts "commit all changes" or similar
+- user prompts "git wip commit changes" or similar
+- user prompts "create wip commit" or similar
+
 ## Overview
 Create standardized git commits using custom formatting rules. Analyze the actual diff/status to generate summary and changes list.
 
-## Commit Messages Formatting
+## Commit Messages Formatting and rules
 
 * First line is a summary line <= 50 characters
 * Line two is empty
@@ -19,7 +26,7 @@ Bullet lists should be indented with 2 spaces and marked with an asterisk (*)
 
 **Example:**
 ```
-Add user login functionality
+feat: Add user login functionality
 
   * Create Login component with validation
   * Implement JWT auth middleware
@@ -42,6 +49,19 @@ Add user login functionality
 | ci    | CI/config changes            |
 | chore | Maintenance/misc             |
 | revert| Revert commit                |
+
+
+## WIP Commit Formatting
+
+If a WIP (work in progress) commit is being requested, prefix the type of commit with WIP:
+
+**Example:**
+```
+WIP: feat: Add user login functionality
+
+  * Create Login component with validation
+
+```
 
 ## Breaking Changes
 Use ! in summary if breaking, or note in bullets:
@@ -73,7 +93,7 @@ git diff
 git status --porcelain
 ```
 
-### 3. Stage Files (if needed)
+### 3. Stage All Files
 
 Handle uncommitted work first:
 - If uncommitted changes exist, stage with `git add .` or specific paths
