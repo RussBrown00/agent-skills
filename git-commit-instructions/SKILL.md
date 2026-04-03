@@ -1,16 +1,9 @@
 ---
 name: git-commit-instructions
-description: Generates git commit messages with custom formatting (short summary + bulleted changes), based on conventional commits workflow. Use when committing changes to git, creating standardized commit messages, or following git commit best practices.
+description: Create standardized git commits from the current repository state using conventional-commit-style summaries, a custom multi-line bullet format, WIP commit variants, and git safety rules. Use when the user asks to commit changes, commit all work, create a WIP commit, or generate a consistent commit message from git status and diff output.
 ---
 
 # Git Commit Skill
-
-## When to Use This Skill
-
-- user prompts "git commit changes" or similar
-- user prompts "commit all changes" or similar
-- user prompts "git wip commit changes" or similar
-- user prompts "create wip commit" or similar
 
 ## Overview
 Create standardized git commits using custom formatting rules. Analyze the actual diff/status to generate summary and changes list.

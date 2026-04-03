@@ -1,16 +1,9 @@
 ---
 name: javascript/react-17-to-18
-description: Guides incremental upgrades from React 17 to 18. Updates dependencies, migrates from ReactDOM.render to createRoot/hydrateRoot, handles automatic batching, stricter StrictMode, test updates, and prepares for React 19. Breaks upgrade into small verifiable steps with validation (npm install, build, test, dev server). Use for React 17 codebases, deprecation warnings, or React 18/19 compatibility.
+description: Upgrade React 17 applications to React 18 safely and incrementally, including dependency updates, migration from ReactDOM.render to createRoot or hydrateRoot, automatic batching changes, StrictMode fallout, test updates, and React 19 preparation. Use when working in a React 17 codebase, resolving React 18 deprecation warnings, finishing a partial upgrade, or validating React 18 or 19 compatibility.
 ---
 
 # React 17 to React 18 Upgrade
-
-## When to Use This Skill
-
-- User wants to upgrade existing React 17 app to 18
-- Console warnings about `ReactDOM.render is no longer supported`
-- Preparing codebase for React 19
-- Fixing issues after partial upgrade to concurrent features
 
 ## Upgrade Phases
 

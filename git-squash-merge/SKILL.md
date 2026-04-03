@@ -1,6 +1,6 @@
 ---
 name: git-squash-merge
-description: Automates squash merge workflow to a target commit hash. Triggered by phrases like "merge and squash to <target>" or "squash merge to <hash>". Commits any uncommitted changes, captures current HEAD hash, performs hard reset to target hash, executes git merge --squash from saved hash, then generates and creates a single clean commit using diff and previous commit messages for context.
+description: Squash all changes since a target commit into one clean commit by committing pending work, resetting to the target hash, running git merge --squash, and generating a final commit message from the intervening history. Use only when the user explicitly asks to "merge and squash to <hash>", "squash merge to <hash>", or gives a similar command naming a target commit hash to squash onto.
 ---
 
 # git-squash-merge
@@ -15,15 +15,6 @@ This skill implements a specific workflow for squashing all changes since a targ
 - Generate clean commit message and commit
 
 **Warning**: This uses `git reset --hard` which is destructive. Only use when user explicitly requests via trigger phrase. Old commits remain in reflog.
-
-## Trigger Detection
-
-Use this skill when user input matches:
-- "merge and squash to <hash>"
-- "squash merge to <hash>"
-- Similar commands specifying a target commit to squash to
-
-Extract the target hash (7+ hexadecimal characters) from the command.
 
 ## Workflow Instructions
 
