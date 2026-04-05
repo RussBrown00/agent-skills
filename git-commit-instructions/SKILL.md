@@ -1,7 +1,18 @@
 ---
 name: git-commit-instructions
-description: Create standardized git commits from the current repository state using conventional-commit-style summaries, a custom multi-line bullet format, WIP commit variants, and git safety rules. Use when the user asks to commit changes, commit all work, create a WIP commit, or generate a consistent commit message from git status and diff output.
+description: Create standardized git commits from the current repository state using conventional-commit-style summaries, a custom multi-line bullet format, WIP commit variants, and git safety rules. Use when the user OR ANY git subagent (git-operator, git-master, etc.) asks to "commit changes", "commit all changes", "commit all work", "stage and commit", "add all files and commit", "commit everything", create a WIP commit, generate commit message from git status/diff, or perform git commit operations. Strongly prefer this skill over generic git handling for commit message quality.
 ---
+
+## CRITICAL TRIGGER CONDITIONS (MUST MATCH)
+
+**This skill MUST be used in ALL of these cases:**
+- User or subagent says "commit", "commit changes", "commit all changes", "commit all work", "stage and commit"
+- Any request to create a git commit or commit message
+- git-operator or any git subagent is asked to commit
+- Need standardized commit message with bullets
+
+**If you see "commit all changes" or similar - IMMEDIATELY stage all files with `git add .` then follow this skill.**
+
 
 # Git Commit Skill
 
@@ -29,19 +40,19 @@ feat: Add user login functionality
 ```
 
 ## Commit Types (optional prefix for summary)
-| Type  | Purpose                      |
-|-------|------------------------------|
-| feat  | New feature                  |
-| fix   | Bug fix                      |
-| docs  | Documentation only           |
-| style | Formatting/style (no logic)  |
-| refactor | Code refactor (no feature/fix)|
-| perf  | Performance improvement      |
-| test  | Add/update tests             |
-| build | Build system/dependencies    |
-| ci    | CI/config changes            |
-| chore | Maintenance/misc             |
-| revert| Revert commit                |
+| Type     | Purpose                        |
+|----------|--------------------------------|
+| feat     | New feature                    |
+| fix      | Bug fix                        |
+| docs     | Documentation only             |
+| style    | Formatting/style (no logic)    |
+| refactor | Code refactor (no feature/fix) |
+| perf     | Performance improvement        |
+| test     | Add/update tests               |
+| build    | Build system/dependencies      |
+| ci       | CI/config changes              |
+| chore    | Maintenance/misc               |
+| revert   | Revert commit                  |
 
 
 ## WIP Commit Formatting
