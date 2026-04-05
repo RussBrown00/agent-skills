@@ -72,9 +72,13 @@ BREAKING CHANGE: v1 API removed
 ### 1. Initial Analysis
 - Run `git status` to check for uncommitted changes
 - Run `git log --oneline -10` to understand recent history
+  - For WIP commits `git log --oneline -3`
 - Use `git status --porcelain` and `git diff` for precise state
 
 ### 2. Analyze Diff
+
+WIP commits can be less precise and shallower
+
 ```
 # Staged changes
 git diff --staged
