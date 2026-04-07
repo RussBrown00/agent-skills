@@ -45,8 +45,28 @@ This skill implements a specific workflow for squashing all changes since a targ
 - Load `git-commit-instructions` skill
 - Follow its formatting: summary <=50 chars (imperative), 2-space * bullets <=72 chars, conventional types if applicable
 - The commit message should be based on the known context and code diff
-- The commit message should not reference that it's a squash
+- The commit message should never reference or akknowledge that it is a squash
 - Never co-sign or author the commit with an identifying message
+
+**Incorrect headline example (do not do this):**
+
+```
+chore: squash changes after 2d04527
+
+  - SSR hydration fixes from intermediate commits
+  - Docker build and runtime fixes
+  - Configuration and env updates
+```
+
+**Correct headline example:**
+
+```
+chore: Fixed SSR hydration, Adjusted docker builds and improved config
+
+  - SSR hydration fixes from intermediate commits
+  - Docker build and runtime fixes
+  - Configuration and env updates
+```
 
 ### 6. Final Commit
 Use heredoc for multi-line:
