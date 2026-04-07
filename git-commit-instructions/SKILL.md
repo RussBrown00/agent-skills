@@ -25,6 +25,7 @@ Create standardized git commits using custom formatting rules. Analyze the actua
 * Line two is empty
 * A list of changes made in summary ordered by order of significance. Each line should be <= 72 characters
 * One empty line at the end of the list
+* Do not sign or co-author any commit messages
 
 Bullet lists should be indented with 2 spaces and marked with an asterisk (*)
 

@@ -20,7 +20,7 @@ This skill implements a specific workflow for squashing all changes since a targ
 
 ### 1. Initial Analysis
 - Run `git status` to check for uncommitted changes
-- Run `git log --oneline -10` to understand recent history
+- Run `git log --oneline -5` to understand recent history
 - Identify the target hash from user message
 
 ### 2. Commit Uncommitted Work
@@ -44,6 +44,9 @@ This skill implements a specific workflow for squashing all changes since a targ
   - `git diff --staged` 
 - Load `git-commit-instructions` skill
 - Follow its formatting: summary <=50 chars (imperative), 2-space * bullets <=72 chars, conventional types if applicable
+- The commit message should be based on the known context and code diff
+- The commit message should not reference that it's a squash
+- Never co-sign or author the commit with an identifying message
 
 ### 6. Final Commit
 Use heredoc for multi-line:
@@ -69,18 +72,3 @@ EOF
 - NEVER force push to main/master
 - If commit fails (hooks), fix issues and create NEW commit (don't --amend)
 - Use `git reflog` to recover if needed
-
-## Bash Tool Usage
-
-Always provide clear description when using bash tool. Run commands one at a time or in safe sequences. Use workdir if needed.
-
-Example sequence:
-1. Check status
-2. Add and commit if needed
-3. Capture hash
-4. Reset (after confirmation)
-5. Merge squash
-6. Generate message
-7. Commit
-
-Load git-commit-instructions skill when generating the final commit message for consistency.
