@@ -21,24 +21,31 @@ Create standardized git commits using custom formatting rules. Analyze the actua
 
 ## Commit Messages Formatting and rules
 
-* First line is a summary line <= 50 characters
-* Line two is empty
-* A list of changes made in summary ordered by order of significance. Each line should be <= 72 characters
-* One empty line at the end of the list
-* Do not sign or co-author any commit messages
+- First line: summary <= 50 characters (imperative mood, conventional commit type when appropriate)
+- Second line: **must be empty**
+- Then a tight bulleted list of changes (most significant first)
+- Each bullet must be <= 72 characters
+- **No blank lines between bullets** — they must be consecutive
+- Use dashes for bullets, not asterisks
+- no empty lines at the very end of the list
 
-Bullet lists should be indented with 2 spaces and marked with an asterisk (*)
+Bullet lists must be indented with **exactly 2 spaces** and marked with an asterisk (`*`).
 
-**Example:**
+**Correct example:**
 ```
 feat: Add user login functionality
 
-  * Create Login component with validation
-  * Implement JWT auth middleware
-  * Add API endpoints for login/register
-  * Write unit tests for auth flow
-
+  - Create Login component with validation
+  - Implement JWT auth middleware
+  - Add API endpoints for login/register
+  - Write unit tests for auth flow
+  - Clean up temporary vite timestamp file
 ```
+
+**Incorrect (do not do this):**
+- Putting a blank line after every bullet
+- Using `-` instead of `  *`
+- Adding extra spacing between list items
 
 ## Commit Types (optional prefix for summary)
 | Type     | Purpose                        |
@@ -73,8 +80,8 @@ Use ! in summary if breaking, or note in bullets:
 ```
 feat!: remove deprecated API
 
-  * Drop v1 endpoints
-  * Update docs
+  - Drop v1 endpoints
+  - Update docs
 
 BREAKING CHANGE: v1 API removed
 ```
@@ -134,11 +141,10 @@ git add -p
 git commit -m "$(cat <<EOF
 Add user login functionality
 
-  * Create Login component with validation
-  * Implement JWT auth middleware
-  * Add API endpoints for login/register
-  * Write unit tests for auth flow
-
+  - Create Login component with validation
+  - Implement JWT auth middleware
+  - Add API endpoints for login/register
+  - Write unit tests for auth flow
 EOF
 )"
 ```
