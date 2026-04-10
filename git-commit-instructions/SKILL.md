@@ -25,11 +25,10 @@ Create standardized git commits using custom formatting rules. Analyze the actua
 - Second line: **must be empty**
 - Then a tight bulleted list of changes (most significant first)
 - Each bullet must be <= 72 characters
-- **No blank lines between bullets** — they must be consecutive
-- Use dashes for bullets, not asterisks
-- no empty lines at the very end of the list
-
-Bullet lists must be indented with **exactly 2 spaces** and marked with an asterisk (`*`).
+- No blank lines between bullets. They must be consecutive
+- No empty lines at the very end of the list
+- Bullet lists must be indented with **exactly 2 spaces** and marked with a dash (`-`).
+- type should be lowercase, followed by proper sentence cased summary
 
 **Correct example:**
 ```
@@ -42,25 +41,21 @@ feat: Add user login functionality
   - Clean up temporary vite timestamp file
 ```
 
-**Incorrect (do not do this):**
-- Putting a blank line after every bullet
-- Using `-` instead of `  *`
-- Adding extra spacing between list items
-
 ## Commit Types (optional prefix for summary)
-| Type     | Purpose                        |
-|----------|--------------------------------|
-| feat     | New feature                    |
-| fix      | Bug fix                        |
-| docs     | Documentation only             |
-| style    | Formatting/style (no logic)    |
-| refactor | Code refactor (no feature/fix) |
-| perf     | Performance improvement        |
-| test     | Add/update tests               |
-| build    | Build system/dependencies      |
-| ci       | CI/config changes              |
-| chore    | Maintenance/misc               |
-| revert   | Revert commit                  |
+| Type     | Purpose                              |
+|----------|--------------------------------------|
+| feat     | New feature                          |
+| feat     | Improvement to AI skill/agent/config |
+| fix      | Bug fix                              |
+| docs     | Documentation only                   |
+| style    | Formatting/style (no logic)          |
+| refactor | Code refactor (no feature/fix)       |
+| perf     | Performance improvement              |
+| test     | Add/update tests                     |
+| build    | Build system/dependencies            |
+| ci       | CI/config changes                    |
+| chore    | Maintenance/misc                     |
+| revert   | Revert commit                        |
 
 
 ## WIP Commit Formatting
@@ -71,14 +66,14 @@ If a WIP (work in progress) commit is being requested, prefix the type of commit
 ```
 WIP: feat: Add user login functionality
 
-  * Create Login component with validation
+  - Create Login component with validation
 
 ```
 
 ## Breaking Changes
-Use ! in summary if breaking, or note in bullets:
+Use a '!' after the type for breaking changes in the header and describe the breaking change in the footer
 ```
-feat!: remove deprecated API
+feat!: Remove deprecated API
 
   - Drop v1 endpoints
   - Update docs
@@ -88,7 +83,34 @@ BREAKING CHANGE: v1 API removed
 
 ## Workflow
 
+### Analysis
+Run:
+- `git status -s`
+- `git diff --cached`
+- `git log --oneline -5`
+
+Use output to determine conventional type, significance, and style consistency.
+
 ### 1. Initial Analysis
+- Run `git status` to check for uncommitted changes
+- Run `git log --oneline -10` to understand recent history
+  - For WIP commits `git log --oneline -3`
+- Use `git status --porcelain` and `git diff` for precise state
+
+### 2. Analyze Diff
+
+WIP commits can be less precise and shallower
+
+```
+# Staged changes
+git diff --staged
+
+# Or working tree
+git diff
+
+# Status
+git status --porcelain
+```
 - Run `git status` to check for uncommitted changes
 - Run `git log --oneline -10` to understand recent history
   - For WIP commits `git log --oneline -3`
@@ -115,23 +137,20 @@ Handle uncommitted work first:
 - If uncommitted changes exist, stage with `git add .` or specific paths
 - For temporary commits before squash/reset workflows, use simple message like "WIP: pending changes"
 
-Add all changed files. Only skip if directed to not add files
+Add all changed files unless dirceted to skip or add only specific files
 
 ```
-# Specific files
+# Add Specific files
 git add path/to/file1.js path/to/file2.js
 
-# Pattern
+# Add Everything
 git add src/components/*
-
-# Interactive
-git add -p
 ```
 
 **Never commit secrets** (.env, keys, credentials).
 
 ### 4. Generate Commit Message
-- Summary: <50 chars, imperative/present tense (e.g., "feat: add login")
+- Summary: <50 chars, imperative/present tense (e.g., "feat: Add login")
 - Bullets: Key changes by significance, <72 chars
 - Optional: Types prefix, refs (Closes #123)
 
