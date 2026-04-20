@@ -29,22 +29,22 @@ Instructions for the agent to follow when this skill is activated.
 ```javascript
 // Traditional function
 function add(a, b) {
-  return a + b;
+	return a + b;
 }
 
 // Arrow function
 const add = (a, b) => a + b;
 
 // Single parameter (parentheses optional)
-const double = (x) => x * 2;
+const double = x => x * 2;
 
 // No parameters
 const getRandom = () => Math.random();
 
 // Multiple statements (need curly braces)
-const processUser = (user) => {
-  const normalized = user.name.toLowerCase();
-  return { ...user, name: normalized };
+const processUser = user => {
+	const normalized = user.name.toLowerCase();
+	return { ...user, name: normalized };
 };
 
 // Returning objects (wrap in parentheses)
@@ -56,12 +56,10 @@ const createUser = (name, age) => ({ name, age });
 - Top level functions should default to traditional functions in code
 - Arrow functions are preferred inside other
 
-
 ### 2. Loops and conditional statements
 
 - When loops are required, prefer a functional approach over `for`, `of`, `while`
-- If you use a for loop, do not use  `for (;;)`, instead choose `for...of`: e.g. `for (const dog of dogs) {}`
-
+- If you use a for loop, do not use `for (;;)`, instead choose `for...of`: e.g. `for (const dog of dogs) {}`
 
 ### 3. Control statements
 
@@ -69,6 +67,13 @@ const createUser = (name, age) => ({ name, age });
   - Do not write `for (const car of storedCars) car.paint("red");`
   - Use brackets with `case` statements like: `case "Orange": {...}`
 - Do not add returns after a break in switch statements
+- Multi-branch UI state logic
+  - If-else chains or switch statements should be used to derive the string once, then renderable templates consume that string.
+  - Avoid nested ternaries for the final label. If a complex mapping is needed, extract it to a helper first.
+  - No nested or stacked ternaries in state-to-string code paths.
+  - All state-to-string mappings live in a small, well-named helper and can be unit-tested independently.
+
+
 
 
 ### 4. Error handling
