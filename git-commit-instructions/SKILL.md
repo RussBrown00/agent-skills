@@ -30,6 +30,17 @@ Create standardized git commits using custom formatting rules. Analyze the actua
 - Bullet lists must be indented with **exactly 2 spaces** and marked with a dash (`-`).
 - type should be lowercase, followed by proper sentence cased summary
 
+## Ticket Reference from Branch Name
+
+1. Run `git branch --show-current` to get the current branch name.
+2. If the branch contains a pattern like `SC-###`, `fix/SC-###`, `feature/SC-###`, or similar (Shortcut ticket), extract the ticket ID (e.g. `SC-771`).
+3. Format the commit **header** as `type(TICKET): summary`.
+   - Example: `fix(SC-771): Improvements to hippo email validation and strengthen test suite`
+   - Use the conventional type (fix, feat, test, etc.) followed by `(SC-771): `
+4. Do this automatically whenever a ticket is detected in the branch name. It is the preferred format for this project.
+5. If no ticket is found in the branch, use normal `type: summary` format.
+
+This rule is mandatory and takes precedence over plain conventional commits when a ticket is present.
 **Correct example:**
 ```
 feat: Add user login functionality
@@ -133,23 +144,18 @@ git status --porcelain
 
 ### 3. Stage All Files
 
-Handle uncommitted work first:
-- If uncommitted changes exist, stage with `git add .` or specific paths
-- For temporary commits before squash/reset workflows, use simple message like "WIP: pending changes"
+**DEFAULT BEHAVIOR (STRICT)**: ALWAYS stage ALL untracked, modified, and deleted files using `git add -A` unless the prompt *explicitly* limits scope (e.g. "only commit these two files", "commit only lib/foo.js", or "exclude the fixture"). Do not ask for clarification. Default to adding everything.
 
-Add all changed files unless dirceted to skip or add only specific files
+This fixes previous behavior where untracked test fixtures were skipped when a narrow list was mentioned in the prompt.
 
-```
-# Add Specific files
-git add path/to/file1.js path/to/file2.js
+Run these commands in order:
+1. `git status --porcelain` to see everything
+2. `git add -A` (default)
+3. `git status` to verify
 
-# Add Everything
-git add src/components/*
-```
+Only use `git add <specific-file>` when the prompt gives a narrow, explicit list of files.
 
-**Never commit secrets** (.env, keys, credentials).
-
-### 4. Generate Commit Message
+**Never commit secrets** (.env, credentials.json, keys, large binaries, or anything in .gitignore). If the user asks to commit sensitive files, warn them and refuse.
 - Summary: <50 chars, imperative/present tense (e.g., "feat: Add login")
 - Bullets: Key changes by significance, <72 chars
 - Optional: Types prefix, refs (Closes #123)
