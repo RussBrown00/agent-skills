@@ -8,11 +8,12 @@ description: Create standardized git commits from the current repository state u
 **This skill MUST be used in ALL of these cases:**
 - User or subagent says "commit", "commit changes", "commit all changes", "commit all work", "stage and commit"
 - Any request to create a git commit or commit message
-- git-operator or any git subagent is asked to commit
+- git-operator or any git subagent (git-master, etc.) is asked to commit
 - Need standardized commit message with bullets
 
-**If you see "commit all changes" or similar - IMMEDIATELY stage all files with `git add .` then follow this skill.**
+**If you see "commit all changes" or similar - IMMEDIATELY stage all files with `git add -A` then follow this skill.**
 
+---
 
 # Git Commit Skill
 
@@ -28,9 +29,9 @@ Create standardized git commits using custom formatting rules. Analyze the actua
 - No blank lines between bullets. They must be consecutive
 - No empty lines at the very end of the list
 - Bullet lists must be indented with **exactly 2 spaces** and marked with a dash (`-`).
-- type should be lowercase, followed by proper sentence cased summary
+- Type should be lowercase, followed by proper sentence-cased summary
 
-## Ticket Reference from Branch Name
+## Ticket Reference from Branch Name (MANDATORY)
 
 1. Run `git branch --show-current` to get the current branch name.
 2. If the branch contains a pattern like `SC-###`, `fix/SC-###`, `feature/SC-###`, or similar (Shortcut ticket), extract the ticket ID (e.g. `SC-771`).
@@ -41,6 +42,7 @@ Create standardized git commits using custom formatting rules. Analyze the actua
 5. If no ticket is found in the branch, use normal `type: summary` format.
 
 This rule is mandatory and takes precedence over plain conventional commits when a ticket is present.
+
 **Correct example:**
 ```
 feat: Add user login functionality
@@ -53,10 +55,10 @@ feat: Add user login functionality
 ```
 
 ## Commit Types (optional prefix for summary)
+
 | Type     | Purpose                              |
 |----------|--------------------------------------|
-| feat     | New feature                          |
-| feat     | Improvement to AI skill/agent/config |
+| feat     | New feature / Improvement to AI skill/agent/config |
 | fix      | Bug fix                              |
 | docs     | Documentation only                   |
 | style    | Formatting/style (no logic)          |
@@ -68,21 +70,20 @@ feat: Add user login functionality
 | chore    | Maintenance/misc                     |
 | revert   | Revert commit                        |
 
-
 ## WIP Commit Formatting
 
-If a WIP (work in progress) commit is being requested, prefix the type of commit with WIP:
+If a WIP (work in progress) commit is being requested, prefix the type with `WIP:`:
 
-**Example:**
 ```
 WIP: feat: Add user login functionality
 
   - Create Login component with validation
-
 ```
 
 ## Breaking Changes
-Use a '!' after the type for breaking changes in the header and describe the breaking change in the footer
+
+Use a `!` after the type for breaking changes in the header and describe the breaking change in the footer:
+
 ```
 feat!: Remove deprecated API
 
@@ -99,77 +100,43 @@ Run:
 - `git status -s`
 - `git diff --cached`
 - `git log --oneline -5`
+- `git branch --show-current`
 
 Use output to determine conventional type, significance, and style consistency.
 
 ### 1. Initial Analysis
 - Run `git status` to check for uncommitted changes
-- Run `git log --oneline -10` to understand recent history
-  - For WIP commits `git log --oneline -3`
+- Run `git log --oneline -10` to understand recent history (use `-3` for WIP)
 - Use `git status --porcelain` and `git diff` for precise state
 
 ### 2. Analyze Diff
-
-WIP commits can be less precise and shallower
-
-```
-# Staged changes
-git diff --staged
-
-# Or working tree
-git diff
-
-# Status
-git status --porcelain
-```
-- Run `git status` to check for uncommitted changes
-- Run `git log --oneline -10` to understand recent history
-  - For WIP commits `git log --oneline -3`
-- Use `git status --porcelain` and `git diff` for precise state
-
-### 2. Analyze Diff
-
-WIP commits can be less precise and shallower
-
-```
-# Staged changes
-git diff --staged
-
-# Or working tree
-git diff
-
-# Status
-git status --porcelain
-```
+WIP commits can be less precise and shallower.
 
 ### 3. Stage All Files
 
-**DEFAULT BEHAVIOR (STRICT)**: ALWAYS stage ALL untracked, modified, and deleted files using `git add -A` unless the prompt *explicitly* limits scope (e.g. "only commit these two files", "commit only lib/foo.js", or "exclude the fixture"). Do not ask for clarification. Default to adding everything.
-
-This fixes previous behavior where untracked test fixtures were skipped when a narrow list was mentioned in the prompt.
+**DEFAULT BEHAVIOR (STRICT)**: ALWAYS stage ALL untracked, modified, and deleted files using `git add -A` unless the prompt *explicitly* limits scope. Do not ask for clarification. Default to adding everything.
 
 Run these commands in order:
 1. `git status --porcelain` to see everything
-2. `git add -A` (default)
+2. `git add -A`
 3. `git status` to verify
 
 Only use `git add <specific-file>` when the prompt gives a narrow, explicit list of files.
 
 **Never commit secrets** (.env, credentials.json, keys, large binaries, or anything in .gitignore). If the user asks to commit sensitive files, warn them and refuse.
-- Summary: <50 chars, imperative/present tense (e.g., "feat: Add login")
-- Bullets: Key changes by significance, <72 chars
-- Optional: Types prefix, refs (Closes #123)
+
+### 4. Generate Commit Message
+- Summary: <50 chars, imperative/present tense
+- Bullets: Key changes by significance, <72 chars, 2-space indent with `-`
+- Include ticket in header when detected
 
 ### 5. Execute Commit
-```
-# Multi-line
-git commit -m "$(cat <<EOF
-Add user login functionality
+```bash
+git commit -m "$(cat <<'EOF'
+type(TICKET): summary
 
-  - Create Login component with validation
-  - Implement JWT auth middleware
-  - Add API endpoints for login/register
-  - Write unit tests for auth flow
+  - change one
+  - change two
 EOF
 )"
 ```
@@ -181,9 +148,16 @@ EOF
 - Reference issues: `Closes #123`, `Refs #456`
 - Keep lines short
 
-## Git Safety Protocol
+## Git Safety Protocol (NON-NEGOTIABLE)
 - NEVER update git config
 - NEVER run destructive commands (--force, --hard reset) without explicit request
 - NEVER skip hooks (--no-verify) unless user asks
 - NEVER force push to main/master
-- If commit fails (hooks), fix issues and create NEW commit (don't --amend)
+- If commit fails (hooks), fix issues and create NEW commit (don't amend)
+
+## Model Routing Note
+This skill works best when invoked via `category="quick"` + explicit `load_skills`. The `git-operator` agent in `oh-my-openagent.json` is configured to use `xai/grok-code-fast-1`. Using the canonical pattern above prevents model fallback issues.
+
+---
+**Last Updated:** April 2026
+**Primary Author:** Sisyphus Orchestration Layer
