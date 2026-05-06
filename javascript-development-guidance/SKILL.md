@@ -1,81 +1,69 @@
 ---
 name: javascript-development-guidance
-description: Enhance and guide the baked in knowledge of Javascript with specific standards, practices and preferences.
+description: Project-specific JavaScript and TypeScript conventions for code design, module layout, control flow, data flow, async, and error handling. Use whenever writing or editing .js, .jsx, .ts, .tsx, .mjs, or .cjs files, defining functions, organizing modules, or refactoring JS code.
 ---
 
 # javascript-development-guidance
 
-Instructions for the agent to follow when this skill is activated.
+Universal base layer for JS/TS. React patterns: separate skill. Test patterns: `javascript-jest`.
 
-## When to use
+Prettier owns formatting (quotes, indent, semis, trailing commas, line width, `arrowParens`, braces). Do not restate Prettier rules.
 
-## When to Use This Skill
+## Function shape
 
-- Writing Javascript or Typescript code
-- Refactoring Javascript or Typescript code
+- Module level: `function` declarations only. Arrows bind `this` lexically; no `this` at module scope.
+- Inside functions: arrows for callbacks and inline helpers.
+- One purpose per function. Guard clauses over nesting.
 
-## Editing and Refactoring
+## File and module layout
 
-- When making code changes, the smallest amount of code should be edited and changed.
-- No unnecessary refactoring outside of targeted areas of code unless directed
-- The goal is to make clean code diffs, keep code reoganization to a minimum
+Imports at top, three groups separated by a blank line:
 
-## Coding and Development Guidance
+1. Node / system built-ins
+2. Third-party packages
+3. Project-local imports (module aliases count as project-local)
 
-### 1. Arrow Functions
+After imports: constants → helpers → primary export(s). Prefer named exports; at most one default per file.
 
-**Syntax and Use Cases:**
+### File size
 
-```javascript
-// Traditional function
-function add(a, b) {
-	return a + b;
-}
+- New code or refactors: aim under ~500 LOC.
+- Small edit to a large existing file: leave structure alone. Don't restructure during unrelated work.
 
-// Arrow function
-const add = (a, b) => a + b;
+## Control flow
 
-// Single parameter (parentheses optional)
-const double = x => x * 2;
+- `switch` cases use braces. No `return` after `break`.
+- Multi-branch state→string mapping lives in a small named helper. No nested ternaries in templates.
+- Guard clauses over nested `if`s.
 
-// No parameters
-const getRandom = () => Math.random();
+## Data flow
 
-// Multiple statements (need curly braces)
-const processUser = user => {
-	const normalized = user.name.toLowerCase();
-	return { ...user, name: normalized };
-};
+- Prefer `map` / `filter` / `reduce` / `find` / `some` / `every` over imperative loops for transforms.
+- Explicit loops use `for...of`. Never `for (;;)`.
+- Don't mutate parameters. Return new values.
 
-// Returning objects (wrap in parentheses)
-const createUser = (name, age) => ({ name, age });
-```
+## Async
 
-#### Usage Guidance
+- Default to `async`/`await`.
+- Short `.then()` chains are fine when naturally functional (e.g. `.then(firstRecord)`).
+- Independent awaits → `Promise.all`. Never serial `await` for independent work.
 
-- Top level functions should default to traditional functions in code
-- Arrow functions are preferred inside other
+## Error handling
 
-### 2. Loops and conditional statements
+- Catch close to the danger point. Wrap the specific call that throws, not the whole function. Broad `try/catch` swallows context.
+- Use `finally` to release resources (DB handles, file handles, timers, locks). Under-used; reach for it.
+- Report errors via project reporter (`reportError`, Honeybadger, winston). Not `console`.
 
-- When loops are required, prefer a functional approach over `for`, `of`, `while`
-- If you use a for loop, do not use `for (;;)`, instead choose `for...of`: e.g. `for (const dog of dogs) {}`
+## Naming
 
-### 3. Control statements
+- Verb-first functions: `getCustomer`, `findOrCreate`, `markEmailSent`.
+- Booleans: `is*` / `has*` / `should*` / `can*`.
+- No abbreviations unless domain-standard (`id`, `url`, `db` ok; `cstmr`, `acct` not).
+- Match neighboring file casing.
 
-- Always use braces with flow statements like `if`, `for`, `while` and `switch` do not use single line statements.
-  - Do not write `for (const car of storedCars) car.paint("red");`
-  - Use brackets with `case` statements like: `case "Orange": {...}`
-- Do not add returns after a break in switch statements
-- Multi-branch UI state logic
-  - If-else chains or switch statements should be used to derive the string once, then renderable templates consume that string.
-  - Avoid nested ternaries for the final label. If a complex mapping is needed, extract it to a helper first.
-  - No nested or stacked ternaries in state-to-string code paths.
-  - All state-to-string mappings live in a small, well-named helper and can be unit-tested independently.
+## Out of scope
 
-
-
-
-### 4. Error handling
-
-- Observce the surrounding code of any `try...catch` or `.catch()` statements. Make use of `finally` statements to cleanup memory or safely shutdown services
+- Anything Prettier owns.
+- React, JSX, hooks, PropTypes.
+- Jest patterns (`javascript-jest`).
+- TypeScript type modeling.
