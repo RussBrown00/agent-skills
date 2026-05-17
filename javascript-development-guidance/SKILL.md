@@ -7,7 +7,7 @@ description: Project-specific JavaScript and TypeScript conventions for code des
 
 Universal base layer for JS/TS. React patterns: separate skill. Test patterns: `javascript-jest`.
 
-Prettier owns formatting (quotes, indent, semis, trailing commas, line width, `arrowParens`, braces). Do not restate Prettier rules.
+Prettier owns formatting (quotes, indent, semis, trailing commas, line width, `arrowParens`). Do not restate Prettier rules.
 
 ## Function shape
 
@@ -32,9 +32,10 @@ After imports: constants → helpers → primary export(s). Prefer named exports
 
 ## Control flow
 
+- **Always brace `if`/`else`/`for`/`while` bodies, even single-statement guard clauses.** No `if (cond) return;` one-liners — write `if (cond) {\n  return;\n}`. Braces make every branch visually scannable and make adding a second statement a no-op diff.
 - `switch` cases use braces. No `return` after `break`.
 - Multi-branch state→string mapping lives in a small named helper. No nested ternaries in templates.
-- Guard clauses over nested `if`s.
+- Guard clauses over nested `if`s (still braced).
 
 ## Data flow
 
